@@ -1,9 +1,7 @@
 package com.cashlo.socialalarm;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -12,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.facebook.HttpMethod;
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
@@ -24,15 +23,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 
 public class FacebookLogin extends Fragment implements View.OnClickListener {
 
     private static final String TAG = "FacebookLogin";
-    private static final List<String> PERMISSIONS = Arrays.asList("read_stream");
+    private static final List<String> PERMISSIONS = Arrays.asList("read_stream", "friends_birthday", "user_friends");
 
     private LoginButton authButton;
     private Button mSpeakButton, mStopSpeakButton;
@@ -92,6 +93,7 @@ public class FacebookLogin extends Fragment implements View.OnClickListener {
     private void onSessionStateChange(Session session, SessionState state, Exception exception) {
         if (state.isOpened()) {
             Log.i(TAG, "Logged in...");
+            //requestPermissions(getActivity(), session);
             showhideButtons(true);
         } else if (state.isClosed()) {
             Log.i(TAG, "Logged out...");
@@ -166,7 +168,50 @@ public class FacebookLogin extends Fragment implements View.OnClickListener {
 
 
     private void speakNewsfeed(){
+
         Session session = Session.getActiveSession();
+
+        StringBuilder speechBuilder = new StringBuilder();
+
+        String todaysDate = new SimpleDateFormat("MM/dd").format(new Date());
+        todaysDate = "02/06";
+
+        String mFriendsWithBirthdayTodayQuery = "SELECT name FROM user WHERE uid IN (SELECT uid2 FROM friend WHERE uid1 = me()) AND substr(birthday_date,0,5) = '" + todaysDate + "'";
+        Bundle params = new Bundle();
+        params.putString("q", mFriendsWithBirthdayTodayQuery);
+
+        Request request = new Request(session, "/fql", params, HttpMethod.GET,
+                new Request.Callback() {
+                    public void onCompleted(Response response) {
+                        Log.i(TAG, "Got results: " + response.toString());
+
+                        GraphObject friendsWithBirthday = response.getGraphObject();
+
+                        if(friendsWithBirthday == null){
+                            return;
+                        }
+
+                        //Log.i("FB", response.toString());
+                        JSONArray friends = (JSONArray) friendsWithBirthday.getProperty("data");
+                        for (int i = 0; i < friends.length(); i++) {
+                            try {
+                                JSONObject friend = (JSONObject) friends.get(i);
+                                if (friend.has("name")) {
+                                    String friendName = friend.getString("name").toString();
+                                    Log.i("Facebook Result", friendName + "'s birthday!");
+
+                                }
+                            } catch (JSONException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            }
+                        }
+
+                    }
+                }
+        );
+        Request.executeBatchAsync(request);
+
         Request.newGraphPathRequest(session, "me/home", new Request.Callback() {
 
             @Override
