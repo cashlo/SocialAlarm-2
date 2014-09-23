@@ -54,7 +54,7 @@ public class FacebookLogin extends Fragment implements View.OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        TTSHelper.initTTS(getActivity().getApplicationContext());
+        TTSHelper.initTTS(getActivity());
         uiHelper = new UiLifecycleHelper(getActivity(), callback);
         uiHelper.onCreate(savedInstanceState);
     }

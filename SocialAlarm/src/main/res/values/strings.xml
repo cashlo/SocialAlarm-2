@@ -24,7 +24,7 @@
 
     <string name="select_a_greeting">First, select how you like to be addressed</string>
 
-    <string name="greeting_1">Good Morning, %s</string>
+    <string name="greeting_1">Good morning, %s</string>
     <string name="greeting_2">Hello, %s, and, again, welcome to the Aperture Science computer-aided enrichment center.</string>
     <string name="greeting_3">I\'m sorry, %s. This mission is too important for me to allow you to jeopardize it.</string>
 

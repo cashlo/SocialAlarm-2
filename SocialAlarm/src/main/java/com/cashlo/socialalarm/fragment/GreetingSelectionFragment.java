@@ -8,17 +8,19 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.cashlo.socialalarm.R;
+import com.cashlo.socialalarm.TTSHelper;
 import com.cashlo.socialalarm.WelcomeActivity;
 
 /**
  * A simple {@link Fragment} subclass.
  *
  */
-public class GreetingSelectionFragment extends Fragment {
+public class GreetingSelectionFragment extends Fragment implements AdapterView.OnItemClickListener {
 
     private ListView mGreetingList;
     private ArrayAdapter<String> mArrayAdapter;
@@ -41,14 +43,20 @@ public class GreetingSelectionFragment extends Fragment {
 
         Resources resources = getResources();
 
-        mArrayAdapter.add(resources.getString(R.string.greeting_1,  welcomeActivity.getFirstName()));
-        mArrayAdapter.add(resources.getString(R.string.greeting_2,  welcomeActivity.getFirstName()));
+        mArrayAdapter.add(resources.getString(R.string.greeting_1, welcomeActivity.getFirstName()));
+        mArrayAdapter.add(resources.getString(R.string.greeting_2, welcomeActivity.getFirstName()));
         mArrayAdapter.add(resources.getString(R.string.greeting_3,  welcomeActivity.getFirstName()));
 
         mGreetingList.setAdapter(mArrayAdapter);
+        mGreetingList.setOnItemClickListener(this);
 
         return rootView;
     }
 
 
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        String greeting = mArrayAdapter.getItem(position);
+        TTSHelper.speak(greeting);
+    }
 }
