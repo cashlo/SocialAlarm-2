@@ -7,10 +7,10 @@
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
           <set>
-            <option value="C:\Users\Cash\Documents\workspace\SocialAlarm-2" />
-            <option value="C:\Users\Cash\Documents\workspace\SocialAlarm-2\SocialAlarm" />
-            <option value="C:\Users\Cash\Documents\workspace\SocialAlarm-2\libraries" />
-            <option value="C:\Users\Cash\Documents\workspace\SocialAlarm-2\libraries\facebook" />
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/SocialAlarm" />
+            <option value="$PROJECT_DIR$/libraries" />
+            <option value="$PROJECT_DIR$/libraries/facebook" />
           </set>
         </option>
       </GradleProjectSettings>
