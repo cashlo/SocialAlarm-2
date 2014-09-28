@@ -108,6 +108,8 @@ public class WelcomeFragment extends Fragment {
     }
 
     private void moveToNextFragment(){
+        SharedPreferences mFacebookUserDate = getActivity().getSharedPreferences("FB", Context.MODE_PRIVATE);
+        mFacebookUserDate.edit().putInt("step", 1).apply();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         GreetingSelectionFragment greetingSelectionFragment = new GreetingSelectionFragment();
         transaction.replace(R.id.container, greetingSelectionFragment);

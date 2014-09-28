@@ -28,4 +28,6 @@
     <string name="greeting_2">Hello, %s, and, again, welcome to the Aperture Science computer-aided enrichment center.</string>
     <string name="greeting_3">I\'m sorry, %s. This mission is too important for me to allow you to jeopardize it.</string>
 
+    <string name="next">Next</string>
+
 </resources>
