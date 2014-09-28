@@ -5,4 +5,12 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="text_view_style">
+        <item
+            name = "android:textSize">18sp</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:padding">10dp</item>
+    </style>
+
 </resources>

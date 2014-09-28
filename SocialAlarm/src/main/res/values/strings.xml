@@ -30,4 +30,11 @@
 
     <string name="next">Next</string>
 
+    // Alarm Setup
+
+    <string name="all_that_is_left">Now all that is left is pick a time for your alarm</string>
+    <string name="test_the_alarm">Test the alarm</string>
+    <string name="save">Save</string>
+
+
 </resources>
