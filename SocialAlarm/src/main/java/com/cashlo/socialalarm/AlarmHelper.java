@@ -1,7 +1,11 @@
 package com.cashlo.socialalarm;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.facebook.HttpMethod;
@@ -15,6 +19,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -23,14 +28,21 @@ import java.util.Date;
 public class AlarmHelper {
     private static final String TAG = "AlarmHelper";
 
+
+
+
     public static void speakNewsfeed(Fragment fragment){
 
         Session session = Session.openActiveSession(fragment.getActivity(), fragment, true, null);
 
-        StringBuilder speechBuilder = new StringBuilder();
+        final StringBuilder speechBuilder = new StringBuilder();
+
+        SharedPreferences mFacebookUserDate = fragment.getActivity().getSharedPreferences("FB", Context.MODE_PRIVATE);
+        speechBuilder.append(mFacebookUserDate.getString("greeting",""));
+
+
 
         String todaysDate = new SimpleDateFormat("MM/dd").format(new Date());
-        todaysDate = "02/06";
 
         String mFriendsWithBirthdayTodayQuery = "SELECT name FROM user WHERE uid IN (SELECT uid2 FROM friend WHERE uid1 = me()) AND substr(birthday_date,0,5) = '" + todaysDate + "'";
         Bundle params = new Bundle();
@@ -48,12 +60,14 @@ public class AlarmHelper {
                         }
 
                         //Log.i("FB", response.toString());
+                        ArrayList<String> friendNamesArray = new ArrayList<String>();
                         JSONArray friends = (JSONArray) friendsWithBirthday.getProperty("data");
                         for (int i = 0; i < friends.length(); i++) {
                             try {
                                 JSONObject friend = (JSONObject) friends.get(i);
                                 if (friend.has("name")) {
                                     String friendName = friend.getString("name").toString();
+                                    friendNamesArray.add(friendName);
                                     Log.i("Facebook Result", friendName + "'s birthday!");
 
                                 }
@@ -63,10 +77,17 @@ public class AlarmHelper {
                             }
                         }
 
+                        if(!friendNamesArray.isEmpty()){
+                            speechBuilder.append("Today is the birthday of ");
+                            speechBuilder.append(TextUtils.join(",", friendNamesArray));
+
+                        }
+
                     }
                 }
         );
-        Request.executeBatchAsync(request);
+
+        Request.executeAndWait(request);
 
         Request.newGraphPathRequest(session, "me/home", new Request.Callback() {
 
@@ -92,7 +113,9 @@ public class AlarmHelper {
                             String englishMessage = message.replaceAll("[^a-zA-Z\\s]", "");
                             Log.i("fb", englishMessage + " " + englishMessage.length() + " " + message.length());
                             if (englishMessage.length() * 2 > message.length()) {
-                                TTSHelper.speak(post.getJSONObject("from").getString("name") + " says " + message);
+                                String friendsaid = post.getJSONObject("from").getString("name") + " says " + message;
+                                //TTSHelper.speak(friendsaid);
+                                speechBuilder.append(friendsaid);
                             }
                             Log.i("Facebook Result", post.getJSONObject("from").getString("name") + ": " + post.getString("message").toString());
                         }
@@ -102,6 +125,11 @@ public class AlarmHelper {
                     }
                 }
             }
-        }).executeAsync();
+        }).executeAndWait();
+
+        String speech = speechBuilder.toString();
+        Log.i("Facebook Final Result", speech);
+        mFacebookUserDate.edit().putString("speech", speech).apply();
+
     }
 }
