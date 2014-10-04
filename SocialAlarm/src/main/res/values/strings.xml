@@ -28,4 +28,23 @@
 
     <string name="title_activity_alarm">AlarmActivity</string>
 
+    // Alarm Screen
+    <string name="snooze">Snooze for %d minutes</string>
+    <string name="close">Close</string>
+   <string name="backup_speech">Once more unto the breach, dear friends, once more;
+
+Or close the wall up with our English dead.
+
+In peace there’s nothing so becomes a man
+
+As modest stillness and humility:
+
+But when the blast of war blows in our ears,
+
+Then imitate the action of the tiger;
+
+Stiffen the sinews, summon up the blood,
+
+Disguise fair nature with hard-favour’d rage</string>
+
 </resources>

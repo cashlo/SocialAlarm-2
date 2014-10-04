@@ -21,6 +21,7 @@
 
 
     <color name="amber">#ffd54f</color>
-
+    <color name="light_green">#8bc34a</color>
+    <color name="orange">#ff9800</color>
 
 </resources>

@@ -1,14 +1,13 @@
 package com.cashlo.socialalarm.fragment;
 
 
-
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
@@ -21,7 +20,6 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.cashlo.socialalarm.AlarmActivity;
-import com.cashlo.socialalarm.AlarmHelper;
 import com.cashlo.socialalarm.R;
 import com.cashlo.socialalarm.TTSHelper;
 import com.cashlo.socialalarm.helper.UserDataStorageHelper;
@@ -124,15 +122,15 @@ public class AlarmSetupFragment extends Fragment implements View.OnClickListener
         calendar.set(Calendar.HOUR_OF_DAY, mAlarmTimePicker.getCurrentHour());
         calendar.set(Calendar.MINUTE, mAlarmTimePicker.getCurrentMinute());
 
-        alarmMgr.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), PendingIntent.getActivity(context, 0, intent, 0));
-    }
-
-    private class getNewsfeedTask extends AsyncTask<Fragment, Void, Void> {
-        @Override
-        protected Void doInBackground(Fragment... params) {
-            Fragment fragment = params[0];
-            AlarmHelper.speakNewsfeed(fragment);
-            return null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            alarmMgr.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), PendingIntent.getActivity(context, 0, intent, 0));
+        } else {
+            alarmMgr.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), PendingIntent.getActivity(context, 0, intent, 0));
         }
+
+        calendar.add(Calendar.MINUTE, -5);
+
+        GetSpeechIntentService.scheduleFacebookSpeech(getActivity(), calendar);
+
     }
 }

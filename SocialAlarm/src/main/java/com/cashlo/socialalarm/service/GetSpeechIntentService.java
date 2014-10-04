@@ -1,10 +1,11 @@
 package com.cashlo.socialalarm.service;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.IntentService;
-import android.content.Intent;
+import android.app.PendingIntent;
 import android.content.Context;
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
@@ -23,6 +24,7 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -42,6 +44,15 @@ public class GetSpeechIntentService extends IntentService {
 
     public static final String FACEBOOK_SPEECH_FINISHED = "FACEBOOK_SPEECH_FINISHED";
     public static final String EXTRA_SPEECH = "SPEECH";
+
+    public static void scheduleFacebookSpeech(Activity activity, Calendar calendar) {
+        Session session = Session.openActiveSession(activity, true, null);
+        Intent intent = new Intent(activity, GetSpeechIntentService.class);
+        intent.setAction(GET_FACEBOOK_SPEECH);
+        intent.putExtra(PARAM_FACEBOOK_SESSION, session);
+        AlarmManager alarmMgr = (AlarmManager) activity.getSystemService(Context.ALARM_SERVICE);
+        alarmMgr.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), PendingIntent.getService(activity, 0, intent, 0));
+    }
 
     public static void getFacebookSpeech(Activity activity) {
         Session session = Session.openActiveSession(activity, true, null);
@@ -105,7 +116,7 @@ public class GetSpeechIntentService extends IntentService {
                     try {
                         JSONObject post = (JSONObject) feed.get(i);
                         if (post.has("message")) {
-                            String message = post.getString("message").toString();
+                            String message = post.getString("message");
                             message = message.replaceAll("\\(?\\b(http://|www[.])[-A-Za-z0-9+&@#/%?=~_()|!:,.;]*[-A-Za-z0-9+&@#/%=~_()|]", "");
                             String englishMessage = message.replaceAll("[^a-zA-Z\\s]", "");
                             Log.i(TAG, englishMessage + " " + englishMessage.length() + " " + message.length());
@@ -114,7 +125,7 @@ public class GetSpeechIntentService extends IntentService {
                                 //TTSHelper.speak(friendsaid);
                                 speechBuilder.append(friendsaid);
                             }
-                            Log.i("Facebook Result", post.getJSONObject("from").getString("name") + ": " + post.getString("message").toString());
+                            Log.i("Facebook Result", post.getJSONObject("from").getString("name") + ": " + post.getString("message"));
                         }
                     } catch (JSONException e) {
                         // TODO Auto-generated catch block
@@ -150,7 +161,7 @@ public class GetSpeechIntentService extends IntentService {
                             try {
                                 JSONObject friend = (JSONObject) friends.get(i);
                                 if (friend.has("name")) {
-                                    String friendName = friend.getString("name").toString();
+                                    String friendName = friend.getString("name");
                                     friendNamesArray.add(friendName);
                                     Log.i(TAG, friendName + "'s birthday!");
 
