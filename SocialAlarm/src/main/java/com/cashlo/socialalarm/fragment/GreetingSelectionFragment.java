@@ -64,6 +64,8 @@ public class GreetingSelectionFragment extends Fragment implements AdapterView.O
 
         mNextTextView.setOnClickListener(this);
 
+        mGreeting = resources.getString(R.string.greeting_1, welcomeActivity.getFirstName());
+
         return rootView;
     }
 

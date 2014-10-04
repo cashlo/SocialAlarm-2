@@ -40,8 +40,8 @@ public class GetSpeechIntentService extends IntentService {
 
     private static final String PARAM_FACEBOOK_SESSION = "FACEBOOK_SESSION";
 
-    private static final String FACEBOOK_SPEECH_FINISHED = "FACEBOOK_SPEECH_FINISHED";
-    private static final String EXTRA_SPEECH = "SPEECH";
+    public static final String FACEBOOK_SPEECH_FINISHED = "FACEBOOK_SPEECH_FINISHED";
+    public static final String EXTRA_SPEECH = "SPEECH";
 
     public static void getFacebookSpeech(Activity activity) {
         Session session = Session.openActiveSession(activity, true, null);

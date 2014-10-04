@@ -4,20 +4,27 @@ package com.cashlo.socialalarm.fragment;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.cashlo.socialalarm.AlarmActivity;
 import com.cashlo.socialalarm.AlarmHelper;
 import com.cashlo.socialalarm.R;
+import com.cashlo.socialalarm.TTSHelper;
+import com.cashlo.socialalarm.helper.UserDataStorageHelper;
 import com.cashlo.socialalarm.service.GetSpeechIntentService;
 
 import java.util.Calendar;
@@ -29,13 +36,26 @@ import java.util.Calendar;
 public class AlarmSetupFragment extends Fragment implements View.OnClickListener {
 
     private TextView mTestAlarmTextView;
+    private TextView mTestAlarmStopTextView;
+
     private TextView mSaveAlarmButton;
     private TimePicker mAlarmTimePicker;
+    private ProgressBar mTestAlarmProgressBar;
+
+    private class SpeechBroadcastReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            mTestAlarmProgressBar.setVisibility(View.GONE);
+            TTSHelper.speak(intent.getStringExtra(GetSpeechIntentService.EXTRA_SPEECH));
+            LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(this);
+        }
+    }
 
 
     public AlarmSetupFragment() {
         // Required empty public constructor
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,10 +73,16 @@ public class AlarmSetupFragment extends Fragment implements View.OnClickListener
         mTestAlarmTextView = (TextView) rootView.findViewById(R.id.alarm_test);
         mTestAlarmTextView.setOnClickListener(this);
 
+        mTestAlarmProgressBar = (ProgressBar) rootView.findViewById(R.id.alarm_test_loading);
+
+        mTestAlarmStopTextView = (TextView) rootView.findViewById(R.id.alarm_test_stop);
+        mTestAlarmStopTextView.setOnClickListener(this);
+
         mSaveAlarmButton =  (TextView) rootView.findViewById(R.id.save_alarm);
         mSaveAlarmButton.setOnClickListener(this);
 
         mAlarmTimePicker = (TimePicker) rootView.findViewById(R.id.alarm_time_picker);
+
 
         return rootView;
     }
@@ -66,11 +92,26 @@ public class AlarmSetupFragment extends Fragment implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.alarm_test:
-               new getNewsfeedTask().execute(this);
+                mTestAlarmStopTextView.setVisibility(View.VISIBLE);
+                String speech = UserDataStorageHelper.getUserData(getActivity(), UserDataStorageHelper.USER_DATA_SPEECH);
+                if(TextUtils.isEmpty(speech)){
+                    startWaitingForSpeech();
+                } else {
+                    TTSHelper.speak(speech);
+                }
+                break;
+            case R.id.alarm_test_stop:
+                TTSHelper.stop();
                 break;
             case R.id.save_alarm:
                 saveAlarm();
         }
+    }
+
+    private void startWaitingForSpeech() {
+        mTestAlarmProgressBar.setVisibility(View.VISIBLE);
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(new SpeechBroadcastReceiver(),
+                new IntentFilter(GetSpeechIntentService.FACEBOOK_SPEECH_FINISHED));
     }
 
     private void saveAlarm() {
