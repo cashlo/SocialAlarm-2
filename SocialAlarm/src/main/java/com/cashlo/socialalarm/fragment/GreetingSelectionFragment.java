@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.cashlo.socialalarm.R;
 import com.cashlo.socialalarm.TTSHelper;
 import com.cashlo.socialalarm.WelcomeActivity;
+import com.cashlo.socialalarm.service.GetSpeechIntentService;
 
 import org.w3c.dom.Text;
 
@@ -90,6 +91,7 @@ public class GreetingSelectionFragment extends Fragment implements AdapterView.O
             welcomeActivity.setmGreeting(mGreeting);
             SharedPreferences mFacebookUserDate = getActivity().getSharedPreferences("FB", Context.MODE_PRIVATE);
             mFacebookUserDate.edit().putString("greeting",mGreeting).apply();
+            GetSpeechIntentService.getFacebookSpeech(getActivity()); // We can already try to get the speech, we will need it later
             moveToNextFragment();
         }
     }

@@ -17,9 +17,9 @@
     // Welcome Screen    <string name="social_alarm_is">Social Alarm™ replace boring repetitive alarm clock with fresh information from the cloud. To do that, we will need you to</string>
     <string name="we_will_never">We will not post to your timeline, unless you ask us to.</string>
     // Greeting Selection Screen    <string name="select_a_greeting">First, select how you like to be addressed</string>
-    <string name="greeting_1">Good morning, %s</string>
-    <string name="greeting_2">Hello, %s, and, again, welcome to the Aperture Science computer-aided enrichment center.</string>
-    <string name="greeting_3">I\'m sorry, %s. This mission is too important for me to allow you to jeopardize it.</string>
+    <string name="greeting_1">Good morning, %s. </string>
+    <string name="greeting_2">Hello, %s, and, again, welcome to the Aperture Science computer-aided enrichment center. </string>
+    <string name="greeting_3">I\'m sorry, %s. This mission is too important for me to allow you to jeopardize it. </string>
     <string name="next">Next</string>
     // Alarm Setup    <string name="all_that_is_left">Now all that is left is pick a time for your alarm</string>
     <string name="test_the_alarm">Test the alarm</string>
