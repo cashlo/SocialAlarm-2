@@ -16,6 +16,7 @@ import android.widget.Button;
 import com.cashlo.socialalarm.R;
 import com.cashlo.socialalarm.TTSHelper;
 import com.cashlo.socialalarm.WelcomeActivity;
+import com.cashlo.socialalarm.helper.UserDataStorageHelper;
 import com.facebook.HttpMethod;
 import com.facebook.Request;
 import com.facebook.Response;
@@ -89,13 +90,11 @@ public class WelcomeFragment extends Fragment {
                 public void onCompleted(GraphUser user, Response response) {
                     Log.i(TAG,"Requested user name");
                     if (user != null) {
-                        SharedPreferences mFacebookUserDate = getActivity().getSharedPreferences("FB", Context.MODE_PRIVATE);
                         WelcomeActivity welcomeActivity = (WelcomeActivity) getActivity();
                         welcomeActivity.setFirstName(user.getFirstName());
                         welcomeActivity.setLastName(user.getLastName());
-                        mFacebookUserDate.edit().putString("first_name", user.getFirstName())
-                                .putString("last_name", user.getLastName()).apply();
-
+                        UserDataStorageHelper.storeUserData(getActivity(), UserDataStorageHelper.USER_DATA_FIRST_NAME, user.getFirstName());
+                        UserDataStorageHelper.storeUserData(getActivity(), UserDataStorageHelper.USER_DATA_LAST_NAME, user.getLastName());
                         Log.i("QWE", "User is "+ user.getFirstName());
                     }
                     moveToNextFragment();
@@ -108,8 +107,7 @@ public class WelcomeFragment extends Fragment {
     }
 
     private void moveToNextFragment(){
-        SharedPreferences mFacebookUserDate = getActivity().getSharedPreferences("FB", Context.MODE_PRIVATE);
-        mFacebookUserDate.edit().putInt("step", 1).apply();
+        UserDataStorageHelper.storeUserProgress(getActivity(), 1);
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         GreetingSelectionFragment greetingSelectionFragment = new GreetingSelectionFragment();
         transaction.replace(R.id.container, greetingSelectionFragment);

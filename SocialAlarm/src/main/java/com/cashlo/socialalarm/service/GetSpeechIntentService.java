@@ -10,6 +10,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.cashlo.socialalarm.helper.UserDataStorageHelper;
 import com.facebook.HttpMethod;
 import com.facebook.Request;
 import com.facebook.Response;
@@ -72,15 +73,15 @@ public class GetSpeechIntentService extends IntentService {
     private void handleGetFacebookSpeech(Session session) {
         final StringBuilder speechBuilder = new StringBuilder();
 
-        SharedPreferences mFacebookUserDate = getSharedPreferences("FB", Context.MODE_PRIVATE);
-        speechBuilder.append(mFacebookUserDate.getString("greeting",""));
+        String greeting = UserDataStorageHelper.getUserData(this, UserDataStorageHelper.USER_DATA_GREETING);
+        speechBuilder.append(greeting);
 
         getFriendsBirthdayStringAndWait(session, speechBuilder);
         getNewsFeedAndWait(session, speechBuilder);
 
         String speech = speechBuilder.toString();
         Log.i(TAG, speech);
-        mFacebookUserDate.edit().putString("speech", speech).apply();
+        UserDataStorageHelper.storeUserData(this, UserDataStorageHelper.USER_DATA_SPEECH, speech);
         sendFacebookSpeechFinishedBoardcast(speech);
     }
 

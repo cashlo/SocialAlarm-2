@@ -18,6 +18,7 @@ import android.widget.TimePicker;
 import com.cashlo.socialalarm.AlarmActivity;
 import com.cashlo.socialalarm.AlarmHelper;
 import com.cashlo.socialalarm.R;
+import com.cashlo.socialalarm.service.GetSpeechIntentService;
 
 import java.util.Calendar;
 
@@ -36,6 +37,11 @@ public class AlarmSetupFragment extends Fragment implements View.OnClickListener
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        GetSpeechIntentService.getFacebookSpeech(getActivity()); // We can already try to get the speech, we will need it later
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentActivity;
 import com.cashlo.socialalarm.fragment.AlarmSetupFragment;
 import com.cashlo.socialalarm.fragment.GreetingSelectionFragment;
 import com.cashlo.socialalarm.fragment.WelcomeFragment;
+import com.cashlo.socialalarm.helper.UserDataStorageHelper;
 
 
 public class WelcomeActivity extends FragmentActivity {
@@ -23,8 +24,7 @@ public class WelcomeActivity extends FragmentActivity {
         setContentView(R.layout.activity_welcome);
         TTSHelper.initTTS(this);
         if (savedInstanceState == null) {
-            SharedPreferences mFacebookUserDate = getSharedPreferences("FB", Context.MODE_PRIVATE);
-            int alarmSetupStep = mFacebookUserDate.getInt("step", 0);
+            int alarmSetupStep = UserDataStorageHelper.getUserProgress(this);
             Fragment fragment;
             switch (alarmSetupStep){
                 case 0:
@@ -47,8 +47,7 @@ public class WelcomeActivity extends FragmentActivity {
 
     public String getFirstName() {
         if(mFirstName == null){
-            SharedPreferences mFacebookUserDate = getSharedPreferences("FB", Context.MODE_PRIVATE);
-            return mFacebookUserDate.getString("first_name", "");
+            return UserDataStorageHelper.getUserData(this, UserDataStorageHelper.USER_DATA_FIRST_NAME);
         } else {
             return mFirstName;
         }
@@ -60,8 +59,7 @@ public class WelcomeActivity extends FragmentActivity {
 
     public String getLastName() {
         if(mLastName == null){
-            SharedPreferences mFacebookUserDate = getSharedPreferences("FB", Context.MODE_PRIVATE);
-            return mFacebookUserDate.getString("last_name", "");
+            return UserDataStorageHelper.getUserData(this, UserDataStorageHelper.USER_DATA_LAST_NAME);
         } else {
             return mLastName;
         }
