@@ -1,9 +1,6 @@
 package com.cashlo.socialalarm.fragment;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -11,30 +8,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.cashlo.socialalarm.R;
-import com.cashlo.socialalarm.TTSHelper;
-import com.cashlo.socialalarm.WelcomeActivity;
+import com.cashlo.socialalarm.activity.WelcomeActivity;
+import com.cashlo.socialalarm.helper.TTSHelper;
 import com.cashlo.socialalarm.helper.UserDataStorageHelper;
-import com.facebook.HttpMethod;
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
-import com.facebook.model.GraphObject;
 import com.facebook.model.GraphUser;
 import com.facebook.widget.LoginButton;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 public class WelcomeFragment extends Fragment {

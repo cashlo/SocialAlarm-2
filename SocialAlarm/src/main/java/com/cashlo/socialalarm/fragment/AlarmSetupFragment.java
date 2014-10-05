@@ -19,9 +19,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import com.cashlo.socialalarm.AlarmActivity;
 import com.cashlo.socialalarm.R;
-import com.cashlo.socialalarm.TTSHelper;
+import com.cashlo.socialalarm.activity.AlarmActivity;
+import com.cashlo.socialalarm.helper.TTSHelper;
 import com.cashlo.socialalarm.helper.UserDataStorageHelper;
 import com.cashlo.socialalarm.service.GetSpeechIntentService;
 

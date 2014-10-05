@@ -1,4 +1,4 @@
-package com.cashlo.socialalarm;
+package com.cashlo.socialalarm.activity;
 
 import android.app.Activity;
 import android.app.AlarmManager;
@@ -13,6 +13,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.cashlo.socialalarm.R;
+import com.cashlo.socialalarm.helper.TTSHelper;
 import com.cashlo.socialalarm.helper.UserDataStorageHelper;
 
 

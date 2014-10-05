@@ -7,7 +7,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:background="@color/amber"
     android:orientation="vertical"
-    tools:context="com.cashlo.socialalarm.AlarmActivity">
+    tools:context="com.cashlo.socialalarm.activity.AlarmActivity">
 
     <TextView
         android:text="@string/greeting_2"

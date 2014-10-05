@@ -1,9 +1,6 @@
 package com.cashlo.socialalarm.fragment;
 
 
-
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,12 +14,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.cashlo.socialalarm.R;
-import com.cashlo.socialalarm.TTSHelper;
-import com.cashlo.socialalarm.WelcomeActivity;
+import com.cashlo.socialalarm.activity.WelcomeActivity;
+import com.cashlo.socialalarm.helper.TTSHelper;
 import com.cashlo.socialalarm.helper.UserDataStorageHelper;
-import com.cashlo.socialalarm.service.GetSpeechIntentService;
-
-import org.w3c.dom.Text;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -92,7 +86,6 @@ public class GreetingSelectionFragment extends Fragment implements AdapterView.O
             WelcomeActivity welcomeActivity = (WelcomeActivity) getActivity();
             welcomeActivity.setmGreeting(mGreeting);
             UserDataStorageHelper.storeUserData(getActivity(), UserDataStorageHelper.USER_DATA_GREETING, mGreeting);
-            GetSpeechIntentService.getFacebookSpeech(getActivity()); // We can already try to get the speech, we will need it later
             moveToNextFragment();
         }
     }

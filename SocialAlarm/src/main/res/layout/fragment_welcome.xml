@@ -9,7 +9,7 @@
     android:orientation="vertical"
     android:gravity="center"
     android:background="@color/amber"
-    tools:context="com.cashlo.socialalarm.WelcomeActivity$PlaceholderFragment">
+    tools:context="com.cashlo.socialalarm.activity.WelcomeActivity$PlaceholderFragment">
 
     <TextView
         android:text="@string/social_alarm_is"
@@ -24,8 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_margin="20dp"
-        />
+        android:layout_margin="20dp" />
 
     <TextView
         android:text="@string/we_will_never"

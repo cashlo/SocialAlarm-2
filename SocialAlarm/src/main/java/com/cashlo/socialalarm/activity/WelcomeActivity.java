@@ -1,14 +1,14 @@
-package com.cashlo.socialalarm;
+package com.cashlo.socialalarm.activity;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 
+import com.cashlo.socialalarm.R;
 import com.cashlo.socialalarm.fragment.AlarmSetupFragment;
 import com.cashlo.socialalarm.fragment.GreetingSelectionFragment;
 import com.cashlo.socialalarm.fragment.WelcomeFragment;
+import com.cashlo.socialalarm.helper.TTSHelper;
 import com.cashlo.socialalarm.helper.UserDataStorageHelper;
 
 
