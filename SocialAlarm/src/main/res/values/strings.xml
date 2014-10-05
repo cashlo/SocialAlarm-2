@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">SocialAlarm</string>
+    <string name="app_name">Social Alarm</string>
     <string name="title_section1">Section 1</string>
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
@@ -13,7 +13,7 @@
     <string name="title_activity_login">Login</string>
     <string name="hello_world">Hello world!</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_welcome">WelcomeActivity</string>
+    <string name="title_activity_welcome">Social Alarm</string>
     // Welcome Screen    <string name="social_alarm_is">Social Alarm™ replace boring repetitive alarm clock with fresh information from the cloud. To do that, we will need you to</string>
     <string name="we_will_never">We will not post to your timeline, unless you ask us to.</string>
     // Greeting Selection Screen    <string name="select_a_greeting">First, select how you like to be addressed</string>
