@@ -16,11 +16,14 @@ import android.widget.TextView;
 import com.cashlo.socialalarm.R;
 import com.cashlo.socialalarm.helper.TTSHelper;
 import com.cashlo.socialalarm.helper.UserDataStorageHelper;
+import com.cashlo.socialalarm.service.GetSpeechIntentService;
 
 
 public class AlarmActivity extends Activity implements View.OnClickListener {
 
     private int mSnoozeMinutes = 5;
+
+    private TextView mGreetingTitle;
 
     private TextView mSnoozeTextView;
     private TextView mCloseTextView;
@@ -33,6 +36,9 @@ public class AlarmActivity extends Activity implements View.OnClickListener {
         window.addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
         window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
         window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+
+        mGreetingTitle = (TextView) findViewById(R.id.greeting_title);
+        mGreetingTitle.setText(UserDataStorageHelper.getUserData(this, UserDataStorageHelper.USER_DATA_GREETING));
 
         mSnoozeTextView = (TextView) findViewById(R.id.snooze);
         mCloseTextView = (TextView) findViewById(R.id.close);
@@ -49,6 +55,7 @@ public class AlarmActivity extends Activity implements View.OnClickListener {
         } else {
             TTSHelper.speak(speech);
         }
+        GetSpeechIntentService.getFacebookSpeech(this);
     }
 
     @Override
@@ -58,6 +65,7 @@ public class AlarmActivity extends Activity implements View.OnClickListener {
                 snooze();
                 break;
             case R.id.close:
+                TTSHelper.stop();
                 finish();
                 break;
         }
@@ -67,11 +75,12 @@ public class AlarmActivity extends Activity implements View.OnClickListener {
         Intent intent = new Intent(this, AlarmActivity.class);
 
         AlarmManager alarmMgr = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+        PendingIntent alarmIntent = PendingIntent.getActivity(this, 1, intent, 0);
 
         alarmMgr.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
                 SystemClock.elapsedRealtime() +
                         mSnoozeMinutes * 60 * 1000, alarmIntent);
+        TTSHelper.stop();
         finish();
     }
 }

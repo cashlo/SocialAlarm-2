@@ -7,17 +7,21 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
+import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.cashlo.socialalarm.R;
 import com.cashlo.socialalarm.activity.AlarmActivity;
@@ -122,15 +126,40 @@ public class AlarmSetupFragment extends Fragment implements View.OnClickListener
         calendar.set(Calendar.HOUR_OF_DAY, mAlarmTimePicker.getCurrentHour());
         calendar.set(Calendar.MINUTE, mAlarmTimePicker.getCurrentMinute());
 
+        if (calendar.getTimeInMillis() - System.currentTimeMillis() <= 0) {
+            calendar.add(Calendar.HOUR, 24);
+        }
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             alarmMgr.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), PendingIntent.getActivity(context, 0, intent, 0));
         } else {
             alarmMgr.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), PendingIntent.getActivity(context, 0, intent, 0));
         }
 
+        long timeDifference = calendar.getTimeInMillis() - System.currentTimeMillis();
+        Log.i("timeDifference", "time: " + formatDuration(timeDifference));
+        Toast.makeText(getActivity(), "Alarm is set to " + formatDuration(timeDifference) + " from now", Toast.LENGTH_LONG).show();
+
         calendar.add(Calendar.MINUTE, -5);
 
         GetSpeechIntentService.scheduleFacebookSpeech(getActivity(), calendar);
 
+    }
+
+    private CharSequence formatDuration(long millis) {
+        final Resources res = getResources();
+        if (millis >= DateUtils.HOUR_IN_MILLIS) {
+            final int hours = (int) ((millis + 1800000) / DateUtils.HOUR_IN_MILLIS);
+            return res.getQuantityString(
+                    R.plurals.duration_hours, hours, hours);
+        } else if (millis >= DateUtils.MINUTE_IN_MILLIS) {
+            final int minutes = (int) ((millis + 30000) / DateUtils.MINUTE_IN_MILLIS);
+            return res.getQuantityString(
+                    R.plurals.duration_minutes, minutes, minutes);
+        } else {
+            final int seconds = (int) ((millis + 500) / DateUtils.SECOND_IN_MILLIS);
+            return res.getQuantityString(
+                    R.plurals.duration_seconds, seconds, seconds);
+        }
     }
 }
